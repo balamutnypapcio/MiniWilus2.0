@@ -1,0 +1,16 @@
+.LM74700QDBVRQ1 :1 ;Low Iq, ideal diode controller
+SOT95P280X145-6N
+*STM IC
+*NGS
+*PLB 1="VCAP" 2="GND" 3="EN" 4="CATHODE" 5="GATE" 6="ANODE"
+*MXP 6
+*DFN LM74700QDBVRQ1
+~!Mouser Part Number (595-LM74700QDBVRQ1)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Texas-Instruments/LM74700QDBVRQ1?qs=j%252B1pi9TdxUYjAZhGV8eSkQ%3D%3D)
+~!Manufacturer_Name (Texas Instruments)
+~!Manufacturer_Part_Number (LM74700QDBVRQ1)
+~!Link Datasheet (http://www.ti.com/lit/gpn/LM74700-Q1)
+~!Height (1.45mm)
+~!3D_Model (LM74700QDBVRQ1)
+LM74700QDBVRQ1
+1.1!U 2.1!U 3.1!U 6.1!U 5.1!U 4.1!U 

@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'LM74700QDBVRQ1'
+CLASS = IC
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Texas Instruments", "LM74700QDBVRQ1" (!) = "", "SOT95P280X145-6N", "SOT23 (6-Pin)", "595-LM74700QDBVRQ1", "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/LM74700QDBVRQ1?qs=j%252B1pi9TdxUYjAZhGV8eSkQ%3D%3D", "Low Iq, ideal diode controller", "http://www.ti.com/lit/gpn/LM74700-Q1", "1.45 mm"
+END_PART
+
+END.

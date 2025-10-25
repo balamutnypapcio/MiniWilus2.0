@@ -1279,6 +1279,12 @@
 		(uuid "f0079fca-d5e0-4a42-8f53-901c984783cd")
 	)
 	(junction
+		(at 91.44 106.68)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f10abe35-6215-42b3-bb2f-bc340a725255")
+	)
+	(junction
 		(at 173.99 86.36)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1342,13 +1348,13 @@
 	)
 	(wire
 		(pts
-			(xy 91.44 104.14) (xy 91.44 106.68)
+			(xy 91.44 106.68) (xy 91.44 110.49)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "12308b46-d4f7-4b3d-a9d4-40af8e83eaf5")
+		(uuid "1db7a672-926f-4332-88b9-e42d1f13d081")
 	)
 	(wire
 		(pts
@@ -1452,6 +1458,16 @@
 	)
 	(wire
 		(pts
+			(xy 91.44 113.03) (xy 91.44 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8688a598-8c26-43c7-9370-d5368a37b7af")
+	)
+	(wire
+		(pts
 			(xy 104.14 99.06) (xy 104.14 109.22)
 		)
 		(stroke
@@ -1512,7 +1528,7 @@
 	)
 	(wire
 		(pts
-			(xy 91.44 99.06) (xy 91.44 101.6)
+			(xy 91.44 99.06) (xy 91.44 106.68)
 		)
 		(stroke
 			(width 0)
@@ -1633,15 +1649,15 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x02_Pin")
-		(at 86.36 101.6 0)
+		(at 86.36 110.49 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "03a33d1c-2d5c-4ef2-82b6-c3be304ba2fa")
-		(property "Reference" "Switch_Power1"
-			(at 84.836 109.474 90)
+		(property "Reference" "Sw_Pwr1"
+			(at 84.836 118.364 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1650,7 +1666,7 @@
 			)
 		)
 		(property "Value" "Conn_01x02_Pin"
-			(at 88.2649 100.33 90)
+			(at 88.2649 109.22 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1660,7 +1676,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical"
-			(at 86.36 101.6 0)
+			(at 86.36 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1669,7 +1685,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 86.36 101.6 0)
+			(at 86.36 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1678,7 +1694,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x02, script generated"
-			(at 86.36 101.6 0)
+			(at 86.36 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1695,7 +1711,7 @@
 		(instances
 			(project "MiniSumoSTM"
 				(path "/74ccf643-7ae0-4d9b-8b7c-e7e124cb3f26/5fd6aca6-b06e-4ddc-825d-1f18e20a3d2c/3b4f43c5-65a3-46ea-9ced-7d72115b509a"
-					(reference "Switch_Power1")
+					(reference "Sw_Pwr1")
 					(unit 1)
 				)
 			)
@@ -1784,7 +1800,7 @@
 				)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "100k"
 			(at 94.488 98.298 0)
 			(effects
 				(font
@@ -2432,7 +2448,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d5135f11-eb42-4eb1-973e-1974ff029d6d")
-		(property "Reference" "Battery_Pin1"
+		(property "Reference" "Batt_Pin1"
 			(at 66.675 81.28 0)
 			(effects
 				(font
@@ -2484,7 +2500,7 @@
 		(instances
 			(project "MiniSumoSTM"
 				(path "/74ccf643-7ae0-4d9b-8b7c-e7e124cb3f26/5fd6aca6-b06e-4ddc-825d-1f18e20a3d2c/3b4f43c5-65a3-46ea-9ced-7d72115b509a"
-					(reference "Battery_Pin1")
+					(reference "Batt_Pin1")
 					(unit 1)
 				)
 			)
@@ -2566,6 +2582,72 @@
 			(project "MiniSumoSTM"
 				(path "/74ccf643-7ae0-4d9b-8b7c-e7e124cb3f26/5fd6aca6-b06e-4ddc-825d-1f18e20a3d2c/3b4f43c5-65a3-46ea-9ced-7d72115b509a"
 					(reference "U7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 91.44 115.57 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e7dfaa4d-c16a-454b-8489-82b9cab1e3cd")
+		(property "Reference" "#PWR067"
+			(at 91.44 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 91.44 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 91.44 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 91.44 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 91.44 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5c781eff-9c2d-4c33-9ffb-187e4e25137c")
+		)
+		(instances
+			(project "MiniSumoSTM"
+				(path "/74ccf643-7ae0-4d9b-8b7c-e7e124cb3f26/5fd6aca6-b06e-4ddc-825d-1f18e20a3d2c/3b4f43c5-65a3-46ea-9ced-7d72115b509a"
+					(reference "#PWR067")
 					(unit 1)
 				)
 			)

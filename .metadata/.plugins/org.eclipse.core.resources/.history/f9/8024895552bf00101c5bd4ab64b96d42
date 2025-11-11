@@ -1,0 +1,90 @@
+/*
+ * vl53l0x_user.c
+ *
+ *  Created on: Nov 10, 2025
+ *      Author: jakub
+ */
+#include "timing.h"
+#include "main.h"
+#include "vl53l0x_user.h"
+#include "i2c.h" // Potrzebujemy uchwytów hi2c1 i hi2c2
+
+
+VL53L0X_Dev_t tof_devices[4];
+
+void TOF_InitSensors(void)
+{
+    // Uśpij wszystkie czujniki
+    HAL_GPIO_WritePin(XSHUT1_GPIO_Port, XSHUT1_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(XSHUT2_GPIO_Port, XSHUT2_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(XSHUT3_GPIO_Port, XSHUT3_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(XSHUT4_GPIO_Port, XSHUT4_Pin, GPIO_PIN_RESET);
+    MyDelay_ms(10); // Użyj HAL_Delay lub Twojej funkcji MyDelay_ms
+
+    // Czujnik 1 (I2C1, nowy adres 0x31)
+    HAL_GPIO_WritePin(XSHUT1_GPIO_Port, XSHUT1_Pin, GPIO_PIN_SET);
+    MyDelay_ms(10);
+    tof_devices[0].I2cHandle = &hi2c1;
+    tof_devices[0].I2cDevAddr = 0x29;
+    if (VL53L0X_SetDeviceAddress(&tof_devices[0], 0x31) == VL53L0X_ERROR_NONE) {
+        tof_devices[0].I2cDevAddr = 0x31;
+    }
+
+    // Czujnik 2 (I2C1, nowy adres 0x33)
+    HAL_GPIO_WritePin(XSHUT2_GPIO_Port, XSHUT2_Pin, GPIO_PIN_SET);
+    MyDelay_ms(10);
+    tof_devices[1].I2cHandle = &hi2c1;
+    tof_devices[1].I2cDevAddr = 0x29;
+    if (VL53L0X_SetDeviceAddress(&tof_devices[1], 0x33) == VL53L0X_ERROR_NONE) {
+        tof_devices[1].I2cDevAddr = 0x33;
+    }
+
+    // Czujnik 3 (I2C2, nowy adres 0x35)
+    HAL_GPIO_WritePin(XSHUT3_GPIO_Port, XSHUT3_Pin, GPIO_PIN_SET);
+    MyDelay_ms(10);
+    tof_devices[2].I2cHandle = &hi2c2;
+    tof_devices[2].I2cDevAddr = 0x29;
+    if (VL53L0X_SetDeviceAddress(&tof_devices[2], 0x35) == VL53L0X_ERROR_NONE) {
+        tof_devices[2].I2cDevAddr = 0x35;
+    }
+
+    // Czujnik 4 (I2C2, nowy adres 0x37)
+    HAL_GPIO_WritePin(XSHUT4_GPIO_Port, XSHUT4_Pin, GPIO_PIN_SET);
+    tof_devices[3].I2cHandle = &hi2c2;
+    tof_devices[3].I2cDevAddr = 0x29;
+    if (VL53L0X_SetDeviceAddress(&tof_devices[3], 0x37) == VL53L0X_ERROR_NONE) {
+        tof_devices[3].I2cDevAddr = 0x37;
+    }
+
+    // Pełna inicjalizacja i start pomiarów
+    for(int i = 0; i < 4; i++) {
+        VL53L0X_DataInit(&tof_devices[i]);
+        VL53L0X_StaticInit(&tof_devices[i]);
+        // Ustawienie profilu pomiarowego (opcjonalnie, ale zalecane)
+        VL53L0X_SetMeasurementTimingBudgetMicroSeconds(&tof_devices[i], 20000); // 20ms budżet = szybkie pomiary
+        VL53L0X_StartMeasurement(&tof_devices[i]);
+    }
+}
+
+uint16_t TOF_ReadDistance(uint8_t sensor_id)
+{
+    if (sensor_id >= 4) return 0; // Zabezpieczenie
+
+    VL53L0X_RangingMeasurementData_t RangingData;
+    if (VL53L0X_GetRangingMeasurementData
+    		(&tof_devices[sensor_id], &RangingData) == VL53L0X_ERROR_NONE)
+    {
+        return RangingData.RangeMilliMeter;
+    }
+    return 0; // Błąd odczytu
+}
+
+void TOF_ReadAllDistances(uint16_t* distances_buffer)
+{
+    for(int i = 0; i < 4; i++)
+    {
+        distances_buffer[i] = TOF_ReadDistance(i);
+    }
+}
+
+

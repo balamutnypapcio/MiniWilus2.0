@@ -1,0 +1,7 @@
+../Core/Src/motors.c:14:6:Motors_Init	1
+../Core/Src/motors.c:24:6:Motors_SetSpeed	9
+../Core/Src/motors.c:68:6:Motors_Forward	1
+../Core/Src/motors.c:74:6:Motors_Backward	1
+../Core/Src/motors.c:80:6:Motors_TurnLeft	1
+../Core/Src/motors.c:86:6:Motors_TurnRight	1
+../Core/Src/motors.c:92:6:Motors_Stop	1

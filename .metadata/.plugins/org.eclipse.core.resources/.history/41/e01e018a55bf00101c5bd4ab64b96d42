@@ -1,0 +1,108 @@
+///*
+/* vl53l0x_user.c
+*
+*  Created on: Nov 10, 2025
+*      Author: jakub
+*/
+
+#include "timing.h"
+#include "main.h"
+#include "vl53l0x_user.h"
+#include "i2c.h" // Potrzebujemy uchwytów hi2c1 i hi2c2
+
+
+VL53L0X_Dev_t tof_devices[4];
+
+void TOF_InitSensors(void)
+{
+    // KROK 1: Wyłącz wszystkie czujniki, ustawiając ich piny XSHUT w stan niski.
+    HAL_GPIO_WritePin(XSHUT1_GPIO_Port, XSHUT1_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(XSHUT2_GPIO_Port, XSHUT2_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(XSHUT3_GPIO_Port, XSHUT3_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(XSHUT4_GPIO_Port, XSHUT4_Pin, GPIO_PIN_RESET);
+    MyDelay_ms(20); // Daj chwilę na ustabilizowanie się stanu
+
+    // --- Inicjalizacja czujników na magistrali I2C1 ---
+
+    // KROK 2: Obudź pierwszy czujnik i zmień jego adres
+    HAL_GPIO_WritePin(XSHUT1_GPIO_Port, XSHUT1_Pin, GPIO_PIN_SET);
+    MyDelay_ms(10); // Opóźnienie na "bootowanie" czujnika
+    tof_devices[0].I2cHandle = &hi2c1;
+    tof_devices[0].I2cDevAddr = 0x29; // Domyślny adres
+    // Zmień adres z 0x29 na 0x31
+    if (VL53L0X_SetDeviceAddress(&tof_devices[0], 0x31) == VL53L0X_ERROR_NONE) {
+        tof_devices[0].I2cDevAddr = 0x31; // Zapisz nowy adres
+    } else {
+        // Obsługa błędu - np. miganie diodą, zatrzymanie programu
+        Error_Handler();
+    }
+
+    // KROK 3: Obudź drugi czujnik i zmień jego adres
+    HAL_GPIO_WritePin(XSHUT2_GPIO_Port, XSHUT2_Pin, GPIO_PIN_SET);
+    MyDelay_ms(10);
+    tof_devices[1].I2cHandle = &hi2c1;
+    tof_devices[1].I2cDevAddr = 0x29; // On też budzi się z domyślnym adresem
+    // Zmień adres z 0x29 na 0x33
+    if (VL53L0X_SetDeviceAddress(&tof_devices[1], 0x33) == VL53L0X_ERROR_NONE) {
+        tof_devices[1].I2cDevAddr = 0x33;
+    } else {
+        Error_Handler();
+    }
+
+    // --- Inicjalizacja czujników na magistrali I2C2 ---
+
+    // KROK 4: Obudź trzeci czujnik i zmień jego adres
+    HAL_GPIO_WritePin(XSHUT3_GPIO_Port, XSHUT3_Pin, GPIO_PIN_SET);
+    MyDelay_ms(10);
+    tof_devices[2].I2cHandle = &hi2c2;
+    tof_devices[2].I2cDevAddr = 0x29;
+    // Zmień adres z 0x29 na 0x35
+    if (VL53L0X_SetDeviceAddress(&tof_devices[2], 0x35) == VL53L0X_ERROR_NONE) {
+        tof_devices[2].I2cDevAddr = 0x35;
+    } else {
+        Error_Handler();
+    }
+
+    // KROK 5: Obudź czwarty czujnik i zmień jego adres
+    HAL_GPIO_WritePin(XSHUT4_GPIO_Port, XSHUT4_Pin, GPIO_PIN_SET);
+    MyDelay_ms(10);
+    tof_devices[3].I2cHandle = &hi2c2;
+    tof_devices[3].I2cDevAddr = 0x29;
+    // Zmień adres z 0x29 na 0x37
+    if (VL53L0X_SetDeviceAddress(&tof_devices[3], 0x37) == VL53L0X_ERROR_NONE) {
+        tof_devices[3].I2cDevAddr = 0x37;
+    } else {
+        Error_Handler();
+    }
+
+    // KROK 6: Po zmianie wszystkich adresów, zainicjuj i uruchom pomiary na wszystkich czujnikach
+    for(int i = 0; i < 4; i++) {
+        VL53L0X_DataInit(&tof_devices[i]);
+        VL53L0X_StaticInit(&tof_devices[i]);
+        VL53L0X_SetMeasurementTimingBudgetMicroSeconds(&tof_devices[i], 20000); // 20ms
+        VL53L0X_StartMeasurement(&tof_devices[i]);
+    }
+}
+
+uint16_t TOF_ReadDistance(uint8_t sensor_id)
+{
+    if (sensor_id >= 4) return 0; // Zabezpieczenie
+
+    VL53L0X_RangingMeasurementData_t RangingData;
+    if (VL53L0X_GetRangingMeasurementData
+    		(&tof_devices[sensor_id], &RangingData) == VL53L0X_ERROR_NONE)
+    {
+        return RangingData.RangeMilliMeter;
+    }
+    return 0; // Błąd odczytu
+}
+
+void TOF_ReadAllDistances(uint16_t* distances_buffer)
+{
+    for(int i = 0; i < 4; i++)
+    {
+        distances_buffer[i] = TOF_ReadDistance(i);
+    }
+}
+
+

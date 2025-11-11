@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Software/MiniWilusIDE.ioc&apos; to &apos;Software.ioc&apos;" description="Rename resource &apos;MiniWilusIDE.ioc&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="MiniWilusIDE.ioc" name="Software.ioc" stamp="1762901349870" updateReferences="true"/>
+</session>

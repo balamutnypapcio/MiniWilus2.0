@@ -1,0 +1,30 @@
+#include "main.h"
+
+volatile uint8_t systick_triggered = 0;
+
+void SysTick_Handler(void)
+{
+    systick_triggered = 1; // flaga testowa
+}
+
+int main(void)
+{
+    HAL_Init();
+    __enable_irq();
+
+    /* Ręcznie ustaw przerwanie SysTick */
+    SCB->ICSR |= SCB_ICSR_PENDSTSET_Msk;
+
+    /* Czekaj, aż handler się wykona */
+    while (!systick_triggered)
+    {
+        // Możesz tu dodać breakpoint
+    }
+
+    /* Jeśli dotrzesz tutaj, NVIC i SysTick działają */
+    while (1)
+    {
+        HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+        HAL_Delay(200);
+    }
+}

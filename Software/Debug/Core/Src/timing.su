@@ -1,2 +1,0 @@
-../Core/Src/timing.c:15:13:HAL_Delay	16	static
-../Core/Src/timing.c:21:6:MyDelay_ms	24	static

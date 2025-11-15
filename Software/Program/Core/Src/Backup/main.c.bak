@@ -19,11 +19,15 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "i2c.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
+#include <stdbool.h>
+#include "vl53l0x_api.h"
+#include "vl53l0x_multi.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,7 +48,22 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+Sensor_Config_t sensor_configs[TOTAL_SENSOR_COUNT] = {
+    // Czujnik 0: na I2C1, sterowany przez XSHUT1
+    { XSHUT1_GPIO_Port, XSHUT1_Pin, &hi2c1 },
+    
+    // Czujnik 1: na I2C1, sterowany przez XSHUT2
+    { XSHUT2_GPIO_Port, XSHUT2_Pin, &hi2c1 },
 
+    // Czujnik 2: na I2C2, sterowany przez XSHUT3
+    //{ XSHUT3_GPIO_Port, XSHUT3_Pin, &hi2c2 },
+
+    // Czujnik 3: na I2C2, sterowany przez XSHUT4
+    //{ XSHUT4_GPIO_Port, XSHUT4_Pin, &hi2c2 }
+};
+
+volatile bool g_sensor1_data_ready = false;
+volatile bool g_sensor2_data_ready = false;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -88,18 +107,32 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_I2C2_Init();
+  MX_I2C1_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-
+   VL53L0X_Multi_Init(sensor_configs, TOTAL_SENSOR_COUNT);
+   uint16_t sensor_distances[2];
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    // HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+    // HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+
+  //   if(g_sensor1_data_ready){
+  //     g_sensor1_data_ready = false;
+  //     sensor_distances[0] = VL53L0X_Single_Read(0);
+  //   }
+  //   if(g_sensor2_data_ready){
+  //     g_sensor2_data_ready = false;
+  //     sensor_distances[1] = VL53L0X_Single_Read(1);
+  //   }
+   }
   /* USER CODE END 3 */
 }
 
@@ -150,6 +183,18 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+  if(GPIO_Pin == EXTI1_Pin){
+    g_sensor1_data_ready = true;
+  }
+  if(GPIO_Pin == EXTI2_Pin){
+    g_sensor2_data_ready = true;
+  }
+}
+
+
 
 /* USER CODE END 4 */
 

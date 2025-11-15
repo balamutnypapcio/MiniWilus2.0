@@ -1,0 +1,41 @@
+#ifndef INC_VL53L0X_MULTI_H_
+#define INC_VL53L0X_MULTI_H_
+
+#include "main.h"
+#include "vl53l0x_api.h"
+
+// --- GŁÓWNA KONFIGURACJA ---
+// Ustaw łączną liczbę wszystkich czujników
+#define TOTAL_SENSOR_COUNT 2
+
+// Struktura opisująca konfigurację pojedynczego czujnika
+typedef struct {
+    GPIO_TypeDef*       xshut_port;
+    uint16_t            xshut_pin;
+    I2C_HandleTypeDef*  i2c_handle;
+} Sensor_Config_t;
+
+/**
+ * @brief Inicjalizuje wszystkie czujniki VL53L0X zdefiniowane w tablicy konfiguracyjnej.
+ * @param configs Wskaźnik do tablicy z konfiguracją każdego czujnika.
+ * @param num_sensors Liczba czujników do zainicjowania (powinna być równa TOTAL_SENSOR_COUNT).
+ */
+void VL53L0X_Multi_Init(const Sensor_Config_t* configs, uint8_t num_sensors);
+
+/**
+ * @brief Odczytuje odległości ze wszystkich zainicjowanych czujników.
+ * @param distances Wskaźnik do tablicy (o rozmiarze TOTAL_SENSOR_COUNT),
+ *                  w której zostaną zapisane zmierzone odległości w mm.
+ */
+void VL53L0X_Multi_Read(uint16_t* distances);
+
+
+/**
+ * @brief Odczytuje odległości ze jednego wskazanego zainicjowanego czujnika.
+ * @param distances Wskaźnik do elementu, w której zostanie zapisana zmierzona odległość w mm.
+ * 
+ */
+uint16_t VL53L0X_Single_Read(uint8_t sensor_number);
+
+
+#endif /* INC_VL53L0X_MULTI_H_ */

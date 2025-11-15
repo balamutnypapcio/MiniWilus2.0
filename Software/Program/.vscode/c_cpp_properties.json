@@ -8,7 +8,9 @@
                 "${workspaceFolder}/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy",
                 "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32G4xx/Include",
                 "${workspaceFolder}/Drivers/CMSIS/Include",
-                "${workspaceFolder}/Core/Inc"
+                "${workspaceFolder}/Core/Inc",
+                "${workspaceFolder}/Drivers/VL53L0X/core/inc",
+                "${workspaceFolder}/Drivers/VL53L0X/platform/inc"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang-14",

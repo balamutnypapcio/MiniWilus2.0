@@ -37,6 +37,12 @@ add_executable(${CMAKE_PROJECT_NAME})
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
 
+
+file(GLOB VL53L0X_CORE_SOURCES "Drivers/VL53L0X/core/src/*.c")
+file(GLOB VL53L0X_PLATFORM_SOURCES "Drivers/VL53L0X/platform/src/*.c")
+
+
+
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined library search paths
@@ -45,11 +51,17 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
+    ${VL53L0X_CORE_SOURCES}
+    ${VL53L0X_PLATFORM_SOURCES}
+    "Core/Src/vl53l0x_multi.c"
+    "Core/Src/motors.c"
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+    "Drivers/VL53L0X/core/inc"
+    "Drivers/VL53L0X/platform/inc"
 )
 
 # Add project symbols (macros)

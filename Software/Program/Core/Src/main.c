@@ -56,15 +56,17 @@ Sensor_Config_t sensor_configs[TOTAL_SENSOR_COUNT] = {
     { XSHUT2_GPIO_Port, XSHUT2_Pin, &hi2c1 },
 
     // Czujnik 2: na I2C2, sterowany przez XSHUT3
-    //{ XSHUT3_GPIO_Port, XSHUT3_Pin, &hi2c2 },
+    { XSHUT3_GPIO_Port, XSHUT3_Pin, &hi2c2 },
 
     // Czujnik 3: na I2C2, sterowany przez XSHUT4
-    //{ XSHUT4_GPIO_Port, XSHUT4_Pin, &hi2c2 }
+    { XSHUT4_GPIO_Port, XSHUT4_Pin, &hi2c2 }
 };
 
 volatile bool g_sensor1_data_ready = false;
 volatile bool g_sensor2_data_ready = false;
-uint16_t sensor_distances[2];
+volatile bool g_sensor3_data_ready = false;
+volatile bool g_sensor4_data_ready = false;
+uint16_t sensor_distances[4];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -115,6 +117,8 @@ int main(void)
 
   g_sensor1_data_ready = false;
   g_sensor2_data_ready = false;
+  g_sensor3_data_ready = false;
+  g_sensor4_data_ready = false;
   VL53L0X_Multi_ClearAllInterrupts();
   /* USER CODE END 2 */
 
@@ -136,8 +140,19 @@ int main(void)
       g_sensor2_data_ready = false;
       sensor_distances[1] = VL53L0X_Single_Read(1);
     }
+    if(g_sensor3_data_ready){
+      g_sensor1_data_ready = false;
+      sensor_distances[2] = VL53L0X_Single_Read(2);
+    }
+    if(g_sensor4_data_ready){
+      g_sensor2_data_ready = false;
+      sensor_distances[3] = VL53L0X_Single_Read(3);
+    }
 
-    if(sensor_distances[0] < 1000 || sensor_distances[1] < 1000){
+    if((sensor_distances[0] < 500 && sensor_distances[0] > 30) || 
+       (sensor_distances[1] < 500 && sensor_distances[1] > 30) ||
+       (sensor_distances[2] < 500 && sensor_distances[2] > 30) || 
+       (sensor_distances[3] < 500 && sensor_distances[4] > 30)){
       HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 1);
     } else {
       HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 0);
@@ -207,6 +222,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
     case EXTI2_Pin: // Użyj etykiety z CubeMX dla pinu czujnika 2 (np. PC14)
       g_sensor2_data_ready = true;
+      break;
+
+    case EXTI3_Pin: // Użyj etykiety z CubeMX dla pinu czujnika 1 (np. PC13)
+      g_sensor3_data_ready = true;
+      break;
+
+    case EXTI4_Pin: // Użyj etykiety z CubeMX dla pinu czujnika 2 (np. PC14)
+      g_sensor4_data_ready = true;
       break;
 
     default:

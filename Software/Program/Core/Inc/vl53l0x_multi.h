@@ -6,7 +6,7 @@
 
 // --- GŁÓWNA KONFIGURACJA ---
 // Ustaw łączną liczbę wszystkich czujników
-#define TOTAL_SENSOR_COUNT 2
+#define TOTAL_SENSOR_COUNT 4
 
 // Struktura opisująca konfigurację pojedynczego czujnika
 typedef struct {

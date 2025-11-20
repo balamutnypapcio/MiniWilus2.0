@@ -141,18 +141,18 @@ int main(void)
       sensor_distances[1] = VL53L0X_Single_Read(1);
     }
     if(g_sensor3_data_ready){
-      g_sensor1_data_ready = false;
+      g_sensor3_data_ready = false;
       sensor_distances[2] = VL53L0X_Single_Read(2);
     }
     if(g_sensor4_data_ready){
-      g_sensor2_data_ready = false;
+      g_sensor4_data_ready = false;
       sensor_distances[3] = VL53L0X_Single_Read(3);
     }
 
     if((sensor_distances[0] < 500 && sensor_distances[0] > 30) || 
        (sensor_distances[1] < 500 && sensor_distances[1] > 30) ||
        (sensor_distances[2] < 500 && sensor_distances[2] > 30) || 
-       (sensor_distances[3] < 500 && sensor_distances[4] > 30)){
+       (sensor_distances[3] < 500 && sensor_distances[3] > 30)){
       HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 1);
     } else {
       HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 0);

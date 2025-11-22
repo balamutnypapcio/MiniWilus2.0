@@ -18,7 +18,10 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
+#include "dma.h"
 #include "i2c.h"
+#include "motors.h"
 #include "tim.h"
 #include "gpio.h"
 
@@ -67,6 +70,8 @@ volatile bool g_sensor2_data_ready = false;
 volatile bool g_sensor3_data_ready = false;
 volatile bool g_sensor4_data_ready = false;
 uint16_t sensor_distances[4];
+
+volatile uint16_t adc_values[3];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -109,9 +114,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_I2C2_Init();
   MX_I2C1_Init();
   MX_TIM3_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
    VL53L0X_Multi_Init(sensor_configs, TOTAL_SENSOR_COUNT);
 
@@ -120,6 +127,14 @@ int main(void)
   g_sensor3_data_ready = false;
   g_sensor4_data_ready = false;
   VL53L0X_Multi_ClearAllInterrupts();
+
+  HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_values, 3);
+
+  uint16_t ls1_value; // Wynik z PA0 (Rank 1)
+  uint16_t ls2_value; // Wynik z PA1 (Rank 2)
+  uint16_t ls3_value; // Wynik z PA2 (Rank 3)
+
+  Motors_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -129,8 +144,12 @@ int main(void)
     //HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
     //HAL_Delay(500);
     /* USER CODE END WHILE */
-
+    Motors_Forward(30);
     /* USER CODE BEGIN 3 */
+
+    ls1_value = adc_values[0]; // Wynik z PA0 (Rank 1)
+    ls2_value = adc_values[1]; // Wynik z PA1 (Rank 2)
+    ls3_value = adc_values[2]; // Wynik z PA2 (Rank 3)
 
     if(g_sensor1_data_ready){
       g_sensor1_data_ready = false;
@@ -149,10 +168,10 @@ int main(void)
       sensor_distances[3] = VL53L0X_Single_Read(3);
     }
 
-    if((sensor_distances[0] < 500 && sensor_distances[0] > 30) || 
-       (sensor_distances[1] < 500 && sensor_distances[1] > 30) ||
-       (sensor_distances[2] < 500 && sensor_distances[2] > 30) || 
-       (sensor_distances[3] < 500 && sensor_distances[3] > 30)){
+    if((sensor_distances[0] < 800 && sensor_distances[0] > 30) || 
+       (sensor_distances[1] < 800 && sensor_distances[1] > 30) ||
+       (sensor_distances[2] < 800 && sensor_distances[2] > 30) || 
+       (sensor_distances[3] < 800 && sensor_distances[3] > 30)){
       HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 1);
     } else {
       HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 0);
@@ -175,7 +194,7 @@ void SystemClock_Config(void)
 
   /** Configure the main internal regulator output voltage
   */
-  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
+  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1_BOOST);
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -185,8 +204,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
-  RCC_OscInitStruct.PLL.PLLN = 8;
+  RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV4;
+  RCC_OscInitStruct.PLL.PLLN = 85;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
@@ -204,7 +223,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
   {
     Error_Handler();
   }

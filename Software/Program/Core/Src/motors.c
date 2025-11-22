@@ -27,8 +27,8 @@ void Motors_SetSpeed(uint8_t motor_id, int8_t speed)
     if (speed > 100) speed = 100;
 
     // Obliczenie wypełnienia PWM
-    // Zakładamy Counter Period (ARR) = 999
-    uint16_t pwm_duty = (uint16_t)((abs(speed) * 999) / 100);
+    // Zakładamy Counter Period (ARR) = 499
+    uint16_t pwm_duty = (uint16_t)((abs(speed) * 499) / 100);
 
     if (motor_id == 1) // --- Sterowanie Silnikiem 1 (M1) ---
     {
@@ -93,3 +93,5 @@ void Motors_Stop(void)
     Motors_SetSpeed(1, 0);
     Motors_SetSpeed(2, 0);
 }
+
+

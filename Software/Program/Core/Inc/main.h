@@ -57,6 +57,9 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define COUNTERPERIOD 499
+#define PRESCALER 16
+#define PULSE 250
 #define EXTI1_Pin GPIO_PIN_13
 #define EXTI1_GPIO_Port GPIOC
 #define EXTI1_EXTI_IRQn EXTI15_10_IRQn
@@ -67,6 +70,12 @@ void Error_Handler(void);
 #define XSHUT2_GPIO_Port GPIOC
 #define XSHUT1_Pin GPIO_PIN_0
 #define XSHUT1_GPIO_Port GPIOF
+#define LS1_Pin GPIO_PIN_0
+#define LS1_GPIO_Port GPIOA
+#define LS2_Pin GPIO_PIN_1
+#define LS2_GPIO_Port GPIOA
+#define LS3_Pin GPIO_PIN_2
+#define LS3_GPIO_Port GPIOA
 #define LED_Pin GPIO_PIN_3
 #define LED_GPIO_Port GPIOA
 #define XSHUT3_Pin GPIO_PIN_5

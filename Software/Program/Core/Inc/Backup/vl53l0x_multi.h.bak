@@ -6,7 +6,7 @@
 
 // --- GŁÓWNA KONFIGURACJA ---
 // Ustaw łączną liczbę wszystkich czujników
-#define TOTAL_SENSOR_COUNT 2
+#define TOTAL_SENSOR_COUNT 4
 
 // Struktura opisująca konfigurację pojedynczego czujnika
 typedef struct {
@@ -36,6 +36,9 @@ void VL53L0X_Multi_Read(uint16_t* distances);
  * 
  */
 uint16_t VL53L0X_Single_Read(uint8_t sensor_number);
+
+
+void VL53L0X_Multi_ClearAllInterrupts(void);
 
 
 #endif /* INC_VL53L0X_MULTI_H_ */

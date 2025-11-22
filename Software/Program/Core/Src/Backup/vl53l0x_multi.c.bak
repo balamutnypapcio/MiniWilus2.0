@@ -1,4 +1,5 @@
 #include "vl53l0x_multi.h"
+#include "main.h"
 #include "vl53l0x_api.h"
 #include "vl53l0x_def.h"
 #include <stdio.h>
@@ -66,9 +67,6 @@ void VL53L0X_Multi_Init(const Sensor_Config_t* configs, uint8_t num_sensors)
 
         status = VL53L0X_PerformRefCalibration(&sensor_devices[i], &VhvSettings, &PhaseCal);
         if (status != VL53L0X_ERROR_NONE) Error_Handler();
-
-        status = VL53L0X_SetDeviceMode(&sensor_devices[i], VL53L0X_DEVICEMODE_CONTINUOUS_RANGING);
-        if (status != VL53L0X_ERROR_NONE) Error_Handler();
         
         // Konfiguracja przerwań dla czujników
         status = VL53L0X_SetGpioConfig(&sensor_devices[i], 0, VL53L0X_DEVICEMODE_CONTINUOUS_RANGING,
@@ -76,11 +74,13 @@ void VL53L0X_Multi_Init(const Sensor_Config_t* configs, uint8_t num_sensors)
         if(status != VL53L0X_ERROR_NONE){
             Error_Handler();
         }
-    }
-        
-    
 
-    // Krok 3: Uruchom pomiary na wszystkich czujnikach
+        status = VL53L0X_SetDeviceMode(&sensor_devices[i], VL53L0X_DEVICEMODE_CONTINUOUS_RANGING);
+        if (status != VL53L0X_ERROR_NONE) Error_Handler();
+
+    }
+
+    // --- FAZA URUCHOMIENIA ---
     for (int i = 0; i < num_sensors; i++) {
         status = VL53L0X_StartMeasurement(&sensor_devices[i]);
         if (status != VL53L0X_ERROR_NONE) Error_Handler();
@@ -109,10 +109,25 @@ uint16_t VL53L0X_Single_Read(uint8_t sensor_number)
 
     VL53L0X_GetRangingMeasurementData(&sensor_devices[sensor_number], &RangingData);
 
+    VL53L0X_ClearInterruptMask(&sensor_devices[sensor_number], 0);
+
     if (RangingData.RangeStatus == 0) {
         return RangingData.RangeMilliMeter;
     } else {
         return 0xFFFF; // Błąd pomiaru
     }
     
+}
+
+
+void VL53L0X_Multi_ClearAllInterrupts(void){
+
+    VL53L0X_Error status = VL53L0X_ERROR_NONE;
+
+    for(int i = 0; i<TOTAL_SENSOR_COUNT; i++){
+        status = VL53L0X_ClearInterruptMask(&sensor_devices[i], 0);
+        if(status != VL53L0X_ERROR_NONE){
+            Error_Handler();
+        }
+    }
 }

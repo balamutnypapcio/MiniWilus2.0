@@ -15,5 +15,6 @@
     "files.associations": {
         "vl53l0x_def.h": "c",
         "stdio.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

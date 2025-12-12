@@ -2118,7 +2118,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 110.49) (xy 119.38 110.49)
+			(xy 118.11 110.49) (xy 121.92 110.49)
 		)
 		(stroke
 			(width 0)
@@ -2148,7 +2148,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 107.95) (xy 132.08 107.95)
+			(xy 118.11 107.95) (xy 134.62 107.95)
 		)
 		(stroke
 			(width 0)
@@ -2168,7 +2168,7 @@
 	)
 	(wire
 		(pts
-			(xy 100.33 107.95) (xy 102.87 107.95)
+			(xy 102.87 107.95) (xy 105.41 107.95)
 		)
 		(stroke
 			(width 0)
@@ -2188,7 +2188,7 @@
 	)
 	(wire
 		(pts
-			(xy 132.08 107.95) (xy 132.08 110.49)
+			(xy 134.62 107.95) (xy 134.62 110.49)
 		)
 		(stroke
 			(width 0)
@@ -2248,7 +2248,7 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 113.03) (xy 102.87 113.03)
+			(xy 101.6 113.03) (xy 105.41 113.03)
 		)
 		(stroke
 			(width 0)
@@ -2408,7 +2408,7 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 110.49) (xy 87.63 109.22)
+			(xy 90.17 110.49) (xy 90.17 109.22)
 		)
 		(stroke
 			(width 0)
@@ -2528,7 +2528,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 113.03) (xy 118.11 113.03)
+			(xy 118.11 113.03) (xy 120.65 113.03)
 		)
 		(stroke
 			(width 0)
@@ -2728,7 +2728,7 @@
 	)
 	(wire
 		(pts
-			(xy 102.87 110.49) (xy 87.63 110.49)
+			(xy 105.41 110.49) (xy 90.17 110.49)
 		)
 		(stroke
 			(width 0)
@@ -2799,7 +2799,7 @@
 	)
 	(hierarchical_label "SCL2"
 		(shape input)
-		(at 99.06 113.03 180)
+		(at 101.6 113.03 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2843,7 +2843,7 @@
 	)
 	(hierarchical_label "XSHUT3"
 		(shape input)
-		(at 100.33 107.95 180)
+		(at 102.87 107.95 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2898,7 +2898,7 @@
 	)
 	(hierarchical_label "EXTI3"
 		(shape input)
-		(at 119.38 110.49 0)
+		(at 121.92 110.49 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2975,7 +2975,7 @@
 	)
 	(hierarchical_label "SDA2"
 		(shape bidirectional)
-		(at 118.11 113.03 0)
+		(at 120.65 113.03 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3273,7 +3273,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 132.08 110.49 0)
+		(at 134.62 110.49 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3282,7 +3282,7 @@
 		(fields_autoplaced yes)
 		(uuid "2d9d943a-fbe3-4d56-91da-338232a36470")
 		(property "Reference" "#PWR063"
-			(at 132.08 116.84 0)
+			(at 134.62 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3291,7 +3291,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 132.08 115.57 0)
+			(at 134.62 115.57 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3299,7 +3299,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 132.08 110.49 0)
+			(at 134.62 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3308,7 +3308,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 132.08 110.49 0)
+			(at 134.62 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3317,7 +3317,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 132.08 110.49 0)
+			(at 134.62 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3886,7 +3886,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 87.63 109.22 0)
+		(at 90.17 109.22 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3895,7 +3895,7 @@
 		(fields_autoplaced yes)
 		(uuid "7a571533-4c9b-4775-b0b3-301268d00a39")
 		(property "Reference" "#PWR062"
-			(at 87.63 113.03 0)
+			(at 90.17 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3904,7 +3904,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 87.63 104.14 0)
+			(at 90.17 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3912,7 +3912,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 87.63 109.22 0)
+			(at 90.17 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3921,7 +3921,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 87.63 109.22 0)
+			(at 90.17 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3930,7 +3930,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 87.63 109.22 0)
+			(at 90.17 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4920,7 +4920,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "deb55773-2730-4377-b1f0-4da9ef1d74bb")
-		(property "Reference" "TF1"
+		(property "Reference" "ToF1"
 			(at 59.69 102.87 0)
 			(effects
 				(font
@@ -4985,7 +4985,7 @@
 		(instances
 			(project "MiniSumoSTM"
 				(path "/74ccf643-7ae0-4d9b-8b7c-e7e124cb3f26/07b86d8b-af43-4da9-8375-8e0423139cdc"
-					(reference "TF1")
+					(reference "ToF1")
 					(unit 1)
 				)
 			)
@@ -5129,7 +5129,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_02x03_Top_Bottom")
-		(at 107.95 110.49 0)
+		(at 110.49 110.49 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5138,7 +5138,7 @@
 		(fields_autoplaced yes)
 		(uuid "f069f040-cafa-4774-9afb-7162ad9f2f9e")
 		(property "Reference" "TF3"
-			(at 109.22 104.14 0)
+			(at 111.76 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5146,7 +5146,7 @@
 			)
 		)
 		(property "Value" "Conn_02x03_Top_Bottom"
-			(at 109.22 104.14 0)
+			(at 111.76 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5155,7 +5155,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical"
-			(at 107.95 110.49 0)
+			(at 110.49 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5164,7 +5164,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 107.95 110.49 0)
+			(at 110.49 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5173,7 +5173,7 @@
 			)
 		)
 		(property "Description" "Generic connector, double row, 02x03, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 107.95 110.49 0)
+			(at 110.49 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)

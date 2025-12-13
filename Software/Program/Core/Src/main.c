@@ -100,7 +100,7 @@ uint32_t last_detection_time = 0;
 uint32_t state_start_time = 0;
 
 
-extern TIM_HandleTypeDef htim2;  // Timer do pomiaru czasu IR
+extern TIM_HandleTypeDef htim2;  // Timer do pomiaru czasu IR 1us
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -448,10 +448,13 @@ void SystemClock_Config(void)
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
-  if (GPIO_Pin == STARTER_Pin) {  // ← ZMIEŃ NA STARTER_Pin
-      IR_GPIO_Callback();
-      return;
-  }
+  // Sprawdź, czy przerwanie pochodzi z pinu IR (STARTER_Pin)
+  if (GPIO_Pin == STARTER_Pin) {
+        // Jeśli tak, po prostu wywołaj funkcję z naszej biblioteki IR
+        IR_GPIO_Callback();
+        // WAŻNE: Zakończ funkcję, aby nie wpaść do poniższego switch-case
+        return;
+    }
   
   switch (GPIO_Pin)
   {

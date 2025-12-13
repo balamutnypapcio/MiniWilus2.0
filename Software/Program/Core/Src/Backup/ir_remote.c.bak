@@ -1,0 +1,175 @@
+#include "ir_remote.h"
+#include "tim.h"
+
+// Timings dla protokołu NEC (w mikrosekundach)
+#define IR_START_MIN    9000    // Start burst: obserwowane 9791-15489
+#define IR_START_MAX    17000
+#define IR_SPACE_MIN    11000   // Space: obserwowane 13735-13754
+#define IR_SPACE_MAX    15000
+#define IR_BIT_MIN      800     // Logical 0: ~1150
+#define IR_BIT_MAX      1400
+#define IR_ONE_MIN      1900    // Logical 1: ~2250
+#define IR_ONE_MAX      2600
+#define IR_REPEAT_MIN   3000
+#define IR_REPEAT_MAX   4000
+#define IR_TIMEOUT      200000  // Zwiększony timeout do 200ms
+
+static IR_Data_t ir_data;
+static volatile bool robot_enabled = false;  // Czy robot ma działać
+extern TIM_HandleTypeDef htim2;  
+
+// Inicjalizacja
+void IR_Init(void) {
+    ir_data.state = IR_IDLE;
+    ir_data.bit_count = 0;
+    ir_data.raw_data = 0;
+    ir_data.data_ready = false;
+    ir_data.last_tick = __HAL_TIM_GET_COUNTER(&htim2); // ← DODAJ - ustaw początkowy tick
+    robot_enabled = false;
+}
+
+// Funkcja sprawdzająca czy robot jest włączony
+bool IR_IsRobotEnabled(void) {
+    return robot_enabled;
+}
+
+// Toggle stanu robota (włącz/wyłącz)
+void IR_ToggleRobot(void) {
+    static uint32_t last_toggle = 0;
+    uint32_t now = HAL_GetTick();
+    
+    // Debouncing - pozwól toggle tylko co 300ms
+    if (now - last_toggle < 300) {
+        return;  // Zbyt szybko
+    }
+    
+    robot_enabled = !robot_enabled;
+    last_toggle = now;
+}
+
+static uint32_t debug_deltas[20];
+static uint8_t debug_idx = 0;
+
+void IR_GPIO_Callback(void) {
+    uint32_t current_tick = __HAL_TIM_GET_COUNTER(&htim2);
+    
+    // Oblicz delta z obsługą overflow timera
+    uint32_t delta;
+    if (current_tick >= ir_data.last_tick) {
+        delta = current_tick - ir_data.last_tick;
+    } else {
+        delta = (0xFFFFFFFF - ir_data.last_tick) + current_tick + 1;
+    }
+    
+    if (debug_idx < 20) {
+    debug_deltas[debug_idx++] = delta;
+    }
+
+    ir_data.last_tick = current_tick;
+    
+    if (delta > 1000000) {  // Więcej niż 1 sekunda = śmieć
+        ir_data.state = IR_IDLE;
+        return;
+    }
+
+    // Sprawdź timeout - tylko jeśli nie jesteśmy w stanie IDLE
+    if (ir_data.state != IR_IDLE && delta > IR_TIMEOUT) {
+        ir_data.state = IR_IDLE;
+        ir_data.bit_count = 0;
+        ir_data.raw_data = 0;
+        return;
+    }
+    
+    switch (ir_data.state) {
+        case IR_IDLE:
+            // Oczekiwanie na start burst (9ms)
+            if (delta > IR_START_MIN && delta < IR_START_MAX) {
+                ir_data.state = IR_START;
+                ir_data.bit_count = 0;
+                ir_data.raw_data = 0;
+            }
+            break;
+            
+        case IR_START:
+            // Sprawdź space po start burst (4.5ms)
+            if (delta > IR_SPACE_MIN && delta < IR_SPACE_MAX) {
+                ir_data.state = IR_ADDRESS;
+            }
+            // Sprawdź repeat code (2.25ms)
+            else if (delta > IR_REPEAT_MIN && delta < IR_REPEAT_MAX) {
+                ir_data.state = IR_REPEAT;
+            }
+            else {
+                ir_data.state = IR_IDLE;
+            }
+            break;
+            
+        case IR_ADDRESS:
+        case IR_COMMAND:
+            // Odbierz bity danych
+            if (delta > IR_BIT_MIN && delta < IR_BIT_MAX) {
+                // Logical 0
+                ir_data.raw_data >>= 1;
+                ir_data.bit_count++;
+            }
+            else if (delta > IR_ONE_MIN && delta < IR_ONE_MAX) {
+                // Logical 1
+                ir_data.raw_data >>= 1;
+                ir_data.raw_data |= 0x80000000;
+                ir_data.bit_count++;
+            }
+            else {
+                // Błędny sygnał
+                ir_data.state = IR_IDLE;
+                break;
+            }
+            
+            // Sprawdź czy odebrano wszystkie 32 bity
+            if (ir_data.bit_count >= 32) {
+                // Wyciągnij adres i komendę
+                ir_data.address = (ir_data.raw_data >> 24) & 0xFF;
+                ir_data.command = (ir_data.raw_data >> 8) & 0xFF;
+                
+                // Sprawdź poprawność (~address i ~command)
+                uint8_t address_inv = (ir_data.raw_data >> 16) & 0xFF;
+                uint8_t command_inv = ir_data.raw_data & 0xFF;
+                
+                if ((ir_data.address == ~address_inv) && 
+                    (ir_data.command == ~command_inv)) {
+                    ir_data.data_ready = true;
+                    
+                        HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 1);
+                        HAL_Delay(100);
+                        HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 0);
+
+                    // Prosto - debouncing jest w IR_ToggleRobot()
+                    IR_ToggleRobot();
+                }
+                
+                ir_data.state = IR_IDLE;
+                ir_data.bit_count = 0;
+            }
+            break;
+            
+        case IR_REPEAT:
+            // Obsługa repeat code - ignoruj
+            ir_data.state = IR_IDLE;
+            break;
+    }
+}
+
+
+// Sprawdź czy są nowe dane
+bool IR_DataReady(void) {
+    return ir_data.data_ready;
+}
+
+// Pobierz ostatnią komendę
+uint8_t IR_GetCommand(void) {
+    return ir_data.command;
+}
+
+// Wyczyść flagę danych
+void IR_ClearFlag(void) {
+    ir_data.data_ready = false;
+}

@@ -21,9 +21,6 @@
 #include "adc.h"
 #include "dma.h"
 #include "i2c.h"
-#include "motors.h"
-#include "stm32g4xx_hal.h"
-#include "stm32g4xx_hal_gpio.h"
 #include "tim.h"
 #include "gpio.h"
 
@@ -33,6 +30,8 @@
 #include <stdbool.h>
 #include "vl53l0x_api.h"
 #include "vl53l0x_multi.h"
+#include "motors.h"
+#include "ir_remote.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,8 +60,7 @@ typedef enum {
     STATE_SEARCH,
     STATE_ATTACK,
     STATE_TRACKING,
-    STATE_ESCAPE_LINE,
-    STATE_TURN_SEARCH
+    STATE_ESCAPE_LINE
 } RobotState;
 
 // Ostatni znany kierunek przeciwnika
@@ -100,6 +98,9 @@ RobotState current_state = STATE_SEARCH;
 LastDirection last_enemy_direction = DIR_UNKNOWN;
 uint32_t last_detection_time = 0;
 uint32_t state_start_time = 0;
+
+
+extern TIM_HandleTypeDef htim2;  // Timer do pomiaru czasu IR
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -277,6 +278,10 @@ void RobotControl(EnemyDetection *enemy) {
             break;
     }
 }
+
+
+
+
 /* USER CODE END 0 */
 
 /**
@@ -313,7 +318,10 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM3_Init();
   MX_ADC1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Base_Start(&htim2);
+  IR_Init();
   VL53L0X_Multi_Init(sensor_configs, TOTAL_SENSOR_COUNT);
 
   g_sensor1_data_ready = false;
@@ -327,31 +335,7 @@ int main(void)
   EnemyDetection enemy = {0};
   Motors_Init();
 
-  HAL_Delay(10000);
-  for(int i = 0; i<3; i++){
-  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 1);
-  HAL_Delay(300);
-  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 0);
-  HAL_Delay(300);
-  }
-
-  HAL_Delay(5000);
-  for(int i = 0; i<2; i++){
-  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 1);
-  HAL_Delay(300);
-  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 0);
-  HAL_Delay(300);
-  }
-
-  HAL_Delay(5000);
-  for(int i = 0; i<1; i++){
-  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 1);
-  HAL_Delay(300);
-  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 0);
-  HAL_Delay(300);
-  }
-
-  HAL_Delay(1000);
+ HAL_Delay(500);
 
   /* USER CODE END 2 */
 
@@ -359,9 +343,22 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+  // HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 1);
+  // HAL_Delay(200);
+  // HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 0);
+  // HAL_Delay(200);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    if (!IR_IsRobotEnabled()) {
+        // Robot WYŁĄCZONY - zatrzymaj silniki i czekaj
+        Motors_Stop();
+        HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, 0);
+        //HAL_Delay(100);
+        continue;  // Pomiń resztę pętli
+    }
+
+
     if(g_sensor1_data_ready){
       g_sensor1_data_ready = false;
       sensor_distances[0] = VL53L0X_Single_Read(0);
@@ -450,6 +447,12 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+
+  if (GPIO_Pin == STARTER_Pin) {  // ← ZMIEŃ NA STARTER_Pin
+      IR_GPIO_Callback();
+      return;
+  }
+  
   switch (GPIO_Pin)
   {
     case EXTI1_Pin:

@@ -55,6 +55,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${VL53L0X_PLATFORM_SOURCES}
     "Core/Src/vl53l0x_multi.c"
     "Core/Src/motors.c"
+    "Core/Src/ir_remote.c"
 )
 
 # Add include paths

@@ -3370,12 +3370,6 @@
 		(uuid "0137add8-eb81-4732-809f-0912d3df8b65")
 	)
 	(junction
-		(at 60.96 109.22)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "05f79d7a-45c9-4857-b297-86a5b16ddf8e")
-	)
-	(junction
 		(at 87.63 83.82)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3785,16 +3779,6 @@
 	)
 	(wire
 		(pts
-			(xy 58.42 109.22) (xy 60.96 109.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "31ace96f-47a1-4995-a27d-c42f13dc5bc0")
-	)
-	(wire
-		(pts
 			(xy 171.45 101.6) (xy 184.15 101.6)
 		)
 		(stroke
@@ -4025,7 +4009,7 @@
 	)
 	(wire
 		(pts
-			(xy 60.96 109.22) (xy 110.49 109.22)
+			(xy 58.42 109.22) (xy 110.49 109.22)
 		)
 		(stroke
 			(width 0)
@@ -4782,16 +4766,6 @@
 			(type default)
 		)
 		(uuid "fcd79891-9b9e-4821-a307-2c80c6ee0efd")
-	)
-	(wire
-		(pts
-			(xy 60.96 119.38) (xy 60.96 116.84)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fd022082-e0ed-47f2-ace0-ba85f970c259")
 	)
 	(wire
 		(pts
@@ -5691,76 +5665,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 60.96 113.03 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "3b1f83fe-afc4-401a-a936-6b40ee3d2acb")
-		(property "Reference" "R16"
-			(at 58.42 114.3001 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1k5"
-			(at 58.42 111.7601 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 62.738 113.03 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 60.96 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 60.96 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "b41a459f-80eb-490d-9973-c7a94a5a1c43")
-		)
-		(pin "1"
-			(uuid "fb50c1b3-f832-4c04-991f-2e07f2c74200")
-		)
-		(instances
-			(project "MiniSumoSTM"
-				(path "/74ccf643-7ae0-4d9b-8b7c-e7e124cb3f26/49c74f4a-020b-47c6-ab92-88fca7232d7d"
-					(reference "R16")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 165.1 66.04 0)
 		(unit 1)
@@ -6288,72 +6192,6 @@
 			(project "MiniSumoSTM"
 				(path "/74ccf643-7ae0-4d9b-8b7c-e7e124cb3f26/49c74f4a-020b-47c6-ab92-88fca7232d7d"
 					(reference "#PWR039")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 60.96 119.38 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "615285e6-b414-4dd1-b06b-f6e46f9309df")
-		(property "Reference" "#PWR050"
-			(at 60.96 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 60.96 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 60.96 119.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 60.96 119.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 60.96 119.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "99aaf361-f402-43f6-b728-cc4b7078807a")
-		)
-		(instances
-			(project "MiniSumoSTM"
-				(path "/74ccf643-7ae0-4d9b-8b7c-e7e124cb3f26/49c74f4a-020b-47c6-ab92-88fca7232d7d"
-					(reference "#PWR050")
 					(unit 1)
 				)
 			)

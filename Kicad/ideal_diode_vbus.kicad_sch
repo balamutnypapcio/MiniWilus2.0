@@ -1210,6 +1210,30 @@
 			(embedded_fonts no)
 		)
 	)
+	(rectangle
+		(start 80.01 59.69)
+		(end 193.04 118.11)
+		(stroke
+			(width 0.381)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 508a6248-4140-46a9-8320-b96e686270a5)
+	)
+	(text "IDEAL DIODE VBUS\n\n"
+		(exclude_from_sim no)
+		(at 162.814 71.12 0)
+		(effects
+			(font
+				(size 3.81 3.81)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "db428ae1-5cc5-42a2-9563-b365cfb8c694")
+	)
 	(junction
 		(at 106.68 82.55)
 		(diameter 0)
@@ -1586,6 +1610,7 @@
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
 		(property "Datasheet" "https://www.tme.eu/Document/06be57a4d3bc5bfe61b849e0142b32c7/AON7422G.pdf"

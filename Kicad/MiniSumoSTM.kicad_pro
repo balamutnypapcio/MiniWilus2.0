@@ -693,14 +693,6 @@
     [
       "49c74f4a-020b-47c6-ab92-88fca7232d7d",
       "MCU"
-    ],
-    [
-      "3b4f43c5-65a3-46ea-9ced-7d72115b509a",
-      "ideal_diode_batt"
-    ],
-    [
-      "94028e0b-ad7d-4194-a21f-b50532a38ec6",
-      "ideal_diode_vbus"
     ]
   ],
   "text_variables": {}

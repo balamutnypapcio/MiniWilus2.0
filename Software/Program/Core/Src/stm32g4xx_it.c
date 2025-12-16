@@ -85,7 +85,13 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-
+  for(int i=0; i<5; i++) {
+      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+      for(volatile uint32_t j=0; j<500000; j++);
+  }
+  
+  // SOFTWARE RESET
+  NVIC_SystemReset();
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {

@@ -1,0 +1,68 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "eb5c85e2-a8ba-47ef-afcb-b0cd1962fd82")
+	(paper "A4")
+	(lib_symbols)
+	(text "16.12.2025"
+		(exclude_from_sim no)
+		(at 212.598 193.294 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "2dd219bc-77f6-4f06-acda-c7d301700e23")
+	)
+	(text "1.0"
+		(exclude_from_sim no)
+		(at 270.002 193.294 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "5053a867-5526-4696-ba6d-9fdc2e7826d8")
+	)
+	(text "Zaprojektowany przez: Jakub Wilczyński"
+		(exclude_from_sim no)
+		(at 197.612 172.212 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "50a84dec-2c02-4a54-b488-9085d15f7a52")
+	)
+	(text "Schemat stanowi dodatek do pracy inżynierskiej "
+		(exclude_from_sim no)
+		(at 202.184 169.164 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "55d4e3db-df35-414c-8439-8ced6d851577")
+	)
+	(text "Schemat ideowy - Mikroprocesor + Interfejs użytkownika - robota MiniWilus2.0"
+		(exclude_from_sim no)
+		(at 225.552 189.738 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.381)
+				(bold yes)
+			)
+		)
+		(uuid "bffde14c-0504-4076-bd48-5bd8d47acaf7")
+	)
+)

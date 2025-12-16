@@ -53,9 +53,10 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     ${VL53L0X_CORE_SOURCES}
     ${VL53L0X_PLATFORM_SOURCES}
-    "Core/Src/vl53l0x_multi.c"
+    "Core/Src/tof_sensors.c"
     "Core/Src/motors.c"
     "Core/Src/ir_remote.c"
+    "Core/Src/robot_logic.c"
 )
 
 # Add include paths

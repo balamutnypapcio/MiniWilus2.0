@@ -5,6 +5,66 @@
 	(uuid "74ccf643-7ae0-4d9b-8b7c-e7e124cb3f26")
 	(paper "A4")
 	(lib_symbols)
+	(text "Zaprojektowany przez: Jakub Wilczyński"
+		(exclude_from_sim no)
+		(at 197.358 172.212 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "68a3517e-58cf-4da2-9662-8ca2eeab11d3")
+	)
+	(text "16.12.2025"
+		(exclude_from_sim no)
+		(at 212.344 193.294 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "afd4d9d8-69ab-45c7-82ce-6fcfeeb1ce09")
+	)
+	(text "MiniWilus2.0 - Schemat głowny systemu\n"
+		(exclude_from_sim no)
+		(at 215.646 189.738 0)
+		(effects
+			(font
+				(size 1.905 1.905)
+				(thickness 0.381)
+				(bold yes)
+			)
+		)
+		(uuid "cfbb9051-4116-4b0d-a25d-179d3c298467")
+	)
+	(text "Schemat stanowi dodatek do pracy inżynierskiej "
+		(exclude_from_sim no)
+		(at 201.93 169.164 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "de31114b-5321-49cd-9361-2d8e4c48873b")
+	)
+	(text "1.0"
+		(exclude_from_sim no)
+		(at 269.748 193.294 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "eb9950a8-80c2-4790-8319-2c96fec9dc33")
+	)
 	(wire
 		(pts
 			(xy 57.15 118.11) (xy 57.15 74.93)
@@ -97,7 +157,7 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 40.64) (xy 64.77 48.26)
+			(xy 67.31 40.64) (xy 67.31 48.26)
 		)
 		(stroke
 			(width 0)
@@ -307,7 +367,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 43.18) (xy 67.31 48.26)
+			(xy 69.85 43.18) (xy 69.85 48.26)
 		)
 		(stroke
 			(width 0)
@@ -467,7 +527,7 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 45.72) (xy 69.85 48.26)
+			(xy 72.39 45.72) (xy 72.39 48.26)
 		)
 		(stroke
 			(width 0)
@@ -487,7 +547,7 @@
 	)
 	(wire
 		(pts
-			(xy 118.11 45.72) (xy 69.85 45.72)
+			(xy 118.11 45.72) (xy 72.39 45.72)
 		)
 		(stroke
 			(width 0)
@@ -517,7 +577,7 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 40.64) (xy 64.77 40.64)
+			(xy 123.19 40.64) (xy 67.31 40.64)
 		)
 		(stroke
 			(width 0)
@@ -527,7 +587,7 @@
 	)
 	(wire
 		(pts
-			(xy 120.65 43.18) (xy 67.31 43.18)
+			(xy 120.65 43.18) (xy 69.85 43.18)
 		)
 		(stroke
 			(width 0)
@@ -582,7 +642,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(stroke
 			(width 0.1524)
 			(type solid)
@@ -601,7 +660,7 @@
 			)
 		)
 		(property "Sheetfile" "sensors.kicad_sch"
-			(at 35.56 75.5146 0)
+			(at 43.942 46.482 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -610,7 +669,7 @@
 			)
 		)
 		(pin "LS1" output
-			(at 69.85 48.26 90)
+			(at 72.39 48.26 90)
 			(uuid "cb3fe887-bf19-46cb-8335-5bdd1008db1b")
 			(effects
 				(font
@@ -620,7 +679,7 @@
 			)
 		)
 		(pin "LS2" output
-			(at 67.31 48.26 90)
+			(at 69.85 48.26 90)
 			(uuid "f031b753-ca49-477b-890f-98b5d17e4f77")
 			(effects
 				(font
@@ -630,7 +689,7 @@
 			)
 		)
 		(pin "LS3" output
-			(at 64.77 48.26 90)
+			(at 67.31 48.26 90)
 			(uuid "1bf8d74d-1c52-4ac0-a8e2-4fc8f61064f2")
 			(effects
 				(font
@@ -1040,7 +1099,7 @@
 		)
 	)
 	(sheet
-		(at 35.56 132.08)
+		(at 34.29 142.24)
 		(size 41.91 29.21)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1056,7 +1115,7 @@
 		)
 		(uuid "5fd6aca6-b06e-4ddc-825d-1f18e20a3d2c")
 		(property "Sheetname" "voltage_supply"
-			(at 35.56 131.3684 0)
+			(at 34.29 141.5284 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1065,7 +1124,7 @@
 			)
 		)
 		(property "Sheetfile" "voltage_supply.kicad_sch"
-			(at 35.56 161.8746 0)
+			(at 34.29 172.0346 0)
 			(effects
 				(font
 					(size 1.27 1.27)

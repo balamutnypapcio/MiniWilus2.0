@@ -1,97 +1,91 @@
-/*
- * motors.c
- *
- *  Created on: Nov 10, 2025
- *      Author: jakub
- */
-#include "main.h" // Dołączamy main.h, aby mieć dostęp do wszystkich definicji pinów
 #include "motors.h"
-#include "tim.h"  // Potrzebujemy uchwytu htim3
+#include "tim.h"
+#include <stdlib.h> 
 
-// --- Implementacje funkcji ---
+static const HBridgeState STATE_FORWARD  = {GPIO_PIN_SET,   GPIO_PIN_RESET};
+static const HBridgeState STATE_BACKWARD = {GPIO_PIN_RESET, GPIO_PIN_SET};
+static const HBridgeState STATE_STOP     = {GPIO_PIN_RESET, GPIO_PIN_RESET};
+
+
+static int8_t constrainSpeed(int8_t speed)
+{
+    if (speed > MAX_SPEED) return MAX_SPEED;
+    if (speed < MIN_SPEED) return MIN_SPEED;
+    return speed;
+}
+
+static HBridgeState determineMotorState(int8_t speed)
+{
+    if (speed > 0) {
+        return STATE_FORWARD;
+    }
+    if (speed < 0) {
+        return STATE_BACKWARD;
+    }
+    return STATE_STOP;
+}
+
+
+
+
+static uint16_t calculatePwmDuty(int8_t speed)
+{
+    return (uint16_t)((abs(speed) * PWM_PERIOD) / 100);
+}
+
+// --- Funkcje wysokiego poziomu (API) ---
 
 void Motors_Init(void)
 {
-
-    // Uruchomienie kanałów PWM dla obu silników
-    // TIM_CHANNEL_4 jest na pinie PWM1 (PB1)
-    // TIM_CHANNEL_1 jest na pinie PWM2 (PB4)
     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 }
 
-void Motors_SetSpeed(uint8_t motor_id, int8_t speed)
+void Motors_SetSpeed(Motor_t motor, int8_t speed)
 {
-    // Walidacja danych wejściowych
-    if (speed < -100) speed = -100;
-    if (speed > 100) speed = 100;
-
-    // Obliczenie wypełnienia PWM
-    // Zakładamy Counter Period (ARR) = 499
-    uint16_t pwm_duty = (uint16_t)((abs(speed) * 499) / 100);
-
-    if (motor_id == 1) // --- Sterowanie Silnikiem 1 (M1) ---
+    speed = constrainSpeed(speed);
+    HBridgeState state = determineMotorState(speed);
+    uint16_t pwmDuty = calculatePwmDuty(speed);
+    if (motor == MOTOR_LEFT)
     {
-        if (speed > 0) { // Jazda do przodu
-            HAL_GPIO_WritePin(M1_OUT1_GPIO_Port, M1_OUT1_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(M1_OUT2_GPIO_Port, M1_OUT2_Pin, GPIO_PIN_RESET);
-        } else if (speed < 0) { // Jazda do tyłu
-            HAL_GPIO_WritePin(M1_OUT1_GPIO_Port, M1_OUT1_Pin, GPIO_PIN_RESET);
-            HAL_GPIO_WritePin(M1_OUT2_GPIO_Port, M1_OUT2_Pin, GPIO_PIN_SET);
-        } else { // Hamowanie
-            HAL_GPIO_WritePin(M1_OUT1_GPIO_Port, M1_OUT1_Pin, GPIO_PIN_RESET);
-            HAL_GPIO_WritePin(M1_OUT2_GPIO_Port, M1_OUT2_Pin, GPIO_PIN_RESET);
-        }
-        // Ustawienie wypełnienia PWM dla silnika M1 (kanał 4)
-        __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, pwm_duty);
+        HAL_GPIO_WritePin(M1_OUT1_GPIO_Port, M1_OUT1_Pin, state.in1);
+        HAL_GPIO_WritePin(M1_OUT2_GPIO_Port, M1_OUT2_Pin, state.in2);
+        __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, pwmDuty);
     }
-    else if (motor_id == 2) // --- Sterowanie Silnikiem 2 (M2) ---
+    else if (motor == MOTOR_RIGHT)
     {
-        if (speed > 0) { // Jazda do przodu
-            HAL_GPIO_WritePin(M2_OUT1_GPIO_Port, M2_OUT1_Pin, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(M2_OUT2_GPIO_Port, M2_OUT2_Pin, GPIO_PIN_RESET);
-        } else if (speed < 0) { // Jazda do tyłu
-            HAL_GPIO_WritePin(M2_OUT1_GPIO_Port, M2_OUT1_Pin, GPIO_PIN_RESET);
-            HAL_GPIO_WritePin(M2_OUT2_GPIO_Port, M2_OUT2_Pin, GPIO_PIN_SET);
-        } else { // Hamowanie
-            HAL_GPIO_WritePin(M2_OUT1_GPIO_Port, M2_OUT1_Pin, GPIO_PIN_RESET);
-            HAL_GPIO_WritePin(M2_OUT2_GPIO_Port, M2_OUT2_Pin, GPIO_PIN_RESET);
-        }
-        // Ustawienie wypełnienia PWM dla silnika M2 (kanał 1)
-        __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pwm_duty);
+        HAL_GPIO_WritePin(M2_OUT1_GPIO_Port, M2_OUT1_Pin, state.in1);
+        HAL_GPIO_WritePin(M2_OUT2_GPIO_Port, M2_OUT2_Pin, state.in2);
+        __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pwmDuty);
     }
 }
 
-// --- Implementacje funkcji pomocniczych ---
-
 void Motors_Forward(int8_t speed)
 {
-    Motors_SetSpeed(1, speed);
-    Motors_SetSpeed(2, speed);
+    Motors_SetSpeed(MOTOR_LEFT, speed);
+    Motors_SetSpeed(MOTOR_RIGHT, speed);
 }
 
 void Motors_Backward(int8_t speed)
 {
-    Motors_SetSpeed(1, -speed);
-    Motors_SetSpeed(2, -speed);
+    Motors_SetSpeed(MOTOR_LEFT, -speed);
+    Motors_SetSpeed(MOTOR_RIGHT, -speed);
 }
 
 void Motors_TurnLeft(int8_t speed)
 {
-    Motors_SetSpeed(1, -speed);
-    Motors_SetSpeed(2, speed);
+    Motors_SetSpeed(MOTOR_LEFT, -speed);
+    Motors_SetSpeed(MOTOR_RIGHT, speed);
 }
 
 void Motors_TurnRight(int8_t speed)
 {
-    Motors_SetSpeed(1, speed);
-    Motors_SetSpeed(2, -speed);
+    Motors_SetSpeed(MOTOR_LEFT, speed);
+    Motors_SetSpeed(MOTOR_RIGHT, -speed);
 }
 
 void Motors_Stop(void)
 {
-    Motors_SetSpeed(1, 0);
-    Motors_SetSpeed(2, 0);
+    Motors_SetSpeed(MOTOR_LEFT, 0);
+    Motors_SetSpeed(MOTOR_RIGHT, 0);
 }
-
-
